@@ -1,0 +1,34 @@
+$def with(package, confirm_info)
+<html>
+<head>
+<title>描述</title>
+<style type="text/css">
+.wrap{margin: 0 auto;}
+</style>
+</head>
+<body>
+$if confirm_info:
+    <SCRIPT>var r = confirm("包" + $confirm_info.package_name + "信息不存在，是否创建该包信息")</SCRIPT>
+
+<div class='wrap'>
+<p><form action="/description/search" method="post">
+选择语言：<select name="language"><option value ="zh_CN">zh_CN</option></select> 
+输入包名：<input type='text' name='package'/>
+<input type='submit' value='搜索'/>
+</form></p>
+
+$if package:
+    <hr />
+    <FORM action="" method="POST">
+    <p>软件包: $package.package<br />
+    别名: <INPUT type="TEXT" value=$package.alias_info name="alias_info"/><br />
+    短描述: <input type="TEXT" value=$package.short_desc name="short_desc" style="width:250px"/><br />
+    长描述: </br><TEXTAREA name="long_desc" cols="80", rows="10">$package.long_desc</TEXTAREA><br />
+    <INPUT type="SUBMIT" name="change_value" value="修改信息"/>
+    <INPUT type="hidden" name="package" value=$package.package />
+    </p>
+    </FORM>
+</div>
+
+</body>
+</html>
