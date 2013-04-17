@@ -1,34 +1,48 @@
-$def with(package, confirm_info)
+$def with(package, confirm_info, result_info)
 <html>
 <head>
 <title>描述</title>
 <style type="text/css">
-.wrap{margin: 0 auto;}
+.wrap{margin: 20 auto; width: 800px;}
 </style>
 </head>
 <body>
-$if confirm_info:
-    <SCRIPT>var r = confirm("包" + $confirm_info.package_name + "信息不存在，是否创建该包信息")</SCRIPT>
-
 <div class='wrap'>
 <p><form action="/description/search" method="post">
-选择语言：<select name="language"><option value ="zh_CN">zh_CN</option></select> 
+    选择语言：
+    <select name="language">
+        <option value ="zh_CN">zh_CN</option>
+        <option value ="abc">测试abc</option>
+    </select> 
 输入包名：<input type='text' name='package'/>
 <input type='submit' value='搜索'/>
 </form></p>
+<hr />
 
 $if package:
-    <hr />
-    <FORM action="" method="POST">
-    <p>软件包: $package.package<br />
-    别名: <INPUT type="TEXT" value=$package.alias_info name="alias_info"/><br />
-    短描述: <input type="TEXT" value=$package.short_desc name="short_desc" style="width:250px"/><br />
-    长描述: </br><TEXTAREA name="long_desc" cols="80", rows="10">$package.long_desc</TEXTAREA><br />
+    <FORM action="/description/modify" method="POST">
+    <p>软件包: <span style="color:red">$package.package </span><br />
+    别名: <INPUT type="TEXT" value=$package.alias name="alias"/><br />
+    短描述: <input type="TEXT" value=$package.short_desc name="short_desc" style="width:80%"/><br />
+    长描述: </br><TEXTAREA name="long_desc" rows="10" style="width:100%">$package.long_desc</TEXTAREA><br />
     <INPUT type="SUBMIT" name="change_value" value="修改信息"/>
     <INPUT type="hidden" name="package" value=$package.package />
+    <INPUT type="hidden" name="language" value=$package.language />
     </p>
     </FORM>
-</div>
 
+$if confirm_info:
+    <p>未找到包<span style="color:red"> $confirm_info.package </span>信息，是否创建该包信息?
+    <p>注意：如果包名称不对，请继续查找;如果包名正确，请创建新的描述！
+    <form action="/description/create" method="POST">
+        <input type="SUBMIT" name="new_info" value="创建"/>
+        <input type="hidden" name="package", value=$confirm_info.package />
+        <input type="hidden" name="language", value=$confirm_info.language />
+    </form><p>
+
+$if result_info:
+    <p>$result_info.info</p>
+
+</div>
 </body>
 </html>
