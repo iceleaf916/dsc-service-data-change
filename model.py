@@ -5,7 +5,7 @@ import os
 import json
 import urllib
 
-DATA_PATH = "../data"
+DATA_PATH = "../deepin-software-center-service-private/dsc-software-data/input_data"
 PKG_INFO = os.path.join(DATA_PATH, "pkg_description")
 
 class NewObject(object):
@@ -61,9 +61,9 @@ def create_new_description(data):
 def modify_description(data):
     path = os.path.join(PKG_INFO, data["language"], data["package"])
     js = {}
-    js["alias"] = urllib.unquote(data["alias"])
-    js["short_desc"] = urllib.unquote(data["short_desc"])
-    js["long_desc"] = urllib.unquote(data["long_desc"])
+    js["alias"] = urllib.unquote(data["alias"]).replace("+", " ")
+    js["short_desc"] = urllib.unquote(data["short_desc"]).replace("+", " ")
+    js["long_desc"] = urllib.unquote(data["long_desc"]).replace("+", " ")
     result_info = {}
     if os.path.exists(path):
         old_info = open(path).read()

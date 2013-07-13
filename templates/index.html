@@ -12,7 +12,7 @@ $def with(package, confirm_info, result_info)
     选择语言：
     <select name="language">
         <option value ="zh_CN">zh_CN</option>
-        <option value ="abc">测试abc</option>
+        <option value ="zh_TW">zh_TW</option>
     </select> 
 输入包名：<input type='text' name='package'/>
 <input type='submit' value='搜索'/>
@@ -22,9 +22,9 @@ $def with(package, confirm_info, result_info)
 $if package:
     <FORM action="/description/modify" method="POST">
     <p>软件包: <span style="color:red">$package.package </span><br />
-    别名: <INPUT type="TEXT" value=$package.alias name="alias"/><br />
-    短描述: <input type="TEXT" value=$package.short_desc name="short_desc" style="width:80%"/><br />
-    长描述: </br><TEXTAREA name="long_desc" rows="10" style="width:100%">$package.long_desc</TEXTAREA><br />
+    别名: <textarea name="alias" rows="1" style="width:100%">$package.alias</textarea><br />
+    短描述: <textarea name="short_desc" rows="1" style="width:100%">$package.short_desc</textarea></br>
+    长描述: <TEXTAREA name="long_desc" rows="10" style="width:100%">$package.long_desc</TEXTAREA><br />
     <INPUT type="SUBMIT" name="change_value" value="修改信息"/>
     <INPUT type="hidden" name="package" value=$package.package />
     <INPUT type="hidden" name="language" value=$package.language />
