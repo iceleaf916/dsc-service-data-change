@@ -7,6 +7,5 @@ dist
 dtk.egg-info
 *.po~
 *.swp
-data
 /move.py
 *.mo
