@@ -20,13 +20,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask
+import os
+import peewee
 
-app = Flask(__name__)
+root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+db_path = os.path.join(root_path, "data/category/new_category.db")
 
-@app.route("/")
-def hello_world():
-    return "Hello world"
+category_db = peewee.SqliteDatabase(db_path, autocommit=False)
+
+class FirstCategory(peewee.Model):
+    name = peewee.CharField()
+    order = peewee.IntegerField(default=0)
+
+    class Meta:
+        database = category_db
+
+class SecondCategory(peewee.Model):
+    name = peewee.CharField()
+    order = peewee.IntegerField(default=0)
+    first_category = peewee.ForeignKeyField(FirstCategory, related_name="first_category")
+
+    class Meta:
+        database = category_db
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    print FirstCategory.select().count()
+    print SecondCategory.select().count()
