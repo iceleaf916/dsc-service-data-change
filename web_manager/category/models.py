@@ -1,22 +1,56 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Remove `managed = False` lines for those models you wish to give write DB access
-# Feel free to rename the models, but don't rename db_table values or field names.
-#
-# Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
-# into your database.
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
 from django.db import models
+from language.models import Language
 
 class Firstcategory(models.Model):
-    name = models.CharField(max_length=255)
+    id_name = models.CharField(max_length=255, verbose_name=u'名称ID')
+    alias_name = models.CharField(max_length=255, verbose_name=u"显示名称")
     order = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.alias_name
+
+    class Meta:
+        verbose_name = u"一级分类"
+        verbose_name_plural = verbose_name
+
+class FirstcategoryL10n(models.Model):
+    alias_name = models.CharField(max_length=255, verbose_name=u'别名')
+    first_category = models.ForeignKey(Firstcategory, verbose_name=u'一级分类')
+    language_code = models.ForeignKey(Language, verbose_name=u"语言")
+
+    def __unicode__(self):
+        return "%s [%s]" % (self.alias_name, self.language_code)
+
+    class Meta:
+        verbose_name = u"一级分类国际化"
+        verbose_name_plural = verbose_name
 
 class Secondcategory(models.Model):
-    name = models.CharField(max_length=255)
+    id_name = models.CharField(max_length=255, verbose_name=u'名称ID')
+    alias_name = models.CharField(max_length=255, verbose_name=u"显示名称")
     order = models.IntegerField(default=0)
-    first_category = models.ForeignKey("Firstcategory")
+    first_category = models.ForeignKey("Firstcategory", verbose_name=u'一级分类')
 
+    def __unicode__(self):
+        return self.alias_name
+
+    class Meta:
+        verbose_name = u"二级分类"
+        verbose_name_plural = verbose_name
+
+class SecondcategoryL10n(models.Model):
+    alias_name = models.CharField(max_length=255, verbose_name=u'别名')
+    second_category= models.ForeignKey(Secondcategory, verbose_name=u'名称ID')
+    language_code = models.ForeignKey(Language, verbose_name=u"语言")
+
+    def __unicode__(self):
+        return "%s [%s]" % (self.alias_name, self.language_code)
+
+    class Meta:
+        verbose_name = u"二级分类国际化"
+        verbose_name_plural = verbose_name

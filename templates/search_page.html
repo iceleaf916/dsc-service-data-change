@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+  <p>Search {{ page_type }} packages:</p>
+  <form action="" method="post">
+    <dl>
+      <dt style="text-align: center;"><input type="text" name="q" style="width: 35em;">
+      <input type="submit" value="Search"></dt>
+    </dl>
+  </form>
+
+  <p></p>
+  <ul>
+  	{% for result in result_list %}
+  	<li>{{ result.pkg_name }}</li>
+  	{% endfor %}
+  </ul>
+{% endblock %}

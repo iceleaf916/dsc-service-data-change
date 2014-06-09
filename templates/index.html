@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Home</h2>
+  <p>Welcome to the site!</p>
+	<ul>
+	  <li><a href='{{ url_for("software_search") }}'>修改描述</a></li>
+	  <li><a href='#'>改分类</a></li>
+	</ul>
+{% endblock %}

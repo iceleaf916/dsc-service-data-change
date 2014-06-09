@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>修改<span style='color: red'>{% if success %}成功{% else %}失败{% endif %}！</span></h2>
+<p><span id="timer">5</span>秒之后返回<a href="{{ url_for('software_details', pkg_name=pkg_name) }}">详情页面</a></p>
+<script language="javascript">
+<!--
+function clock(){
+	i=i-1;
+	document.getElementById("timer").innerText = i;
+	if(i>0) {
+		setTimeout("clock();",1000);
+	}else{
+		window.location.href = "{{ url_for('software_details', pkg_name=pkg_name) }}";
+	}
+}
+var i=6;
+clock();
+//-->
+</script>
+{% endblock %}

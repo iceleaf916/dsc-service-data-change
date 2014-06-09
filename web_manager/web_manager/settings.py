@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'desktop',
     'software',
     'category',
+    'language',
 )
 
 MIDDLEWARE_CLASSES = (

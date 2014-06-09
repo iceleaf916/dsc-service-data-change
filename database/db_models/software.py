@@ -24,36 +24,24 @@ import os
 import peewee
 
 root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-db_dir = os.path.join(root_path, "data/software")
 
-def get_support_languages():
-    lauanges = []
-    for d in os.listdir(db_dir):
-        db_path = os.path.join(db_dir, d, "software.db")
-        if os.path.exists(db_path):
-            lauanges.append(d)
-    return lauanges
+db_path = os.path.join(root_path, "data/software/software.db")
+#software_db = peewee.SqliteDatabase(db_path, autocommit=False)
+software_db = peewee.SqliteDatabase(db_path)
+
+class Language(peewee.Model):
+    language_code = peewee.CharField()
+    alias_name = peewee.CharField(default=language_code)
+
+    class Meta:
+        database = software_db
 
 class Software(peewee.Model):
     pkg_name = peewee.CharField()
     alias_name = peewee.CharField()
     short_desc = peewee.CharField()
     long_desc = peewee.TextField()
+    language = peewee.ForeignKeyField(Language)
 
-    @classmethod
-    def init_language(cls, lang):
-        support_languages = get_support_languages()
-        if lang in support_languages:
-            db_path = os.path.join(db_dir, lang, "software.db")
-            software_db = peewee.SqliteDatabase(db_path, autocommit=False)
-            cls._meta.database = software_db
-            return software_db
-        else:
-            return None
-
-if __name__ == "__main__":
-    lang = "en_US"
-    if Software.init_language(lang):
-        print Software.select().count()
-    else:
-        print "No data for lang:", lang
+    class Meta:
+        database = software_db

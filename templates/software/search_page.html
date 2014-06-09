@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+  <p>Search {{ page_type }} packages:</p>
+  <form action="" method="get">
+    <dl>
+      <dt style="text-align: center;"><input type="text" name="s" style="width: 35em;" value="{{ key }}">
+      <input type="submit" value="Search"></dt>
+    </dl>
+  </form>
+
+  <p></p>
+  <ul>
+    {% if result_list %}
+  	{% for pkg_name in result_list %}
+  	<li>
+      <a href='{{ url_for("software_details", pkg_name=pkg_name) }}'>{{ pkg_name }}</a>
+      <a href='{{ url_for("software_details", pkg_name=pkg_name+":i386") }}'>i386</a>
+    </li>
+  	{% endfor %}
+    {% else %}
+      {% if key %}
+      <li>
+        <a href='{{ url_for("software_details", pkg_name=key) }}'>{{ key }}</a>
+        <a href='{{ url_for("software_details", pkg_name=key+":i386") }}'>i386</a>
+      </li>
+      {% endif %}
+    {% endif %}
+  </ul>
+{% endblock %}

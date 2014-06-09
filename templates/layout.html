@@ -1,0 +1,10 @@
+<!doctype html>
+<title>DSC Data Manager</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <h1><a href="{{ url_for('index') }}">DSC Data Manager</a></h1>
+  <div class=metanav>
+    Version: 0.1
+  </div>
+  {% block body %}{% endblock %}
+</div>

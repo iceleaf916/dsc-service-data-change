@@ -1,5 +1,11 @@
 from django.contrib import admin
 
-from software.models import Software
+from software.models import Software, SoftwareL10n
 
-admin.site.register(Software)
+class SoftwareL10nInline(admin.TabularInline):
+    model = SoftwareL10n
+
+class SoftwareAdmin(admin.ModelAdmin):
+    inlines = [SoftwareL10nInline,]
+
+admin.site.register(Software, SoftwareAdmin)

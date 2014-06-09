@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% for software in software_list %}
+<form action="{{ url_for('software_edit', pkg_name=pkg_name) }}" method="post">
+	<dl>
+	  <dt>语言：</dt>
+	  <dd>{{ software.language }}</dd>
+      <dt>别名:</dt>
+      <dd><input type=text name="alias_name" style="width: 90%" value="{{ software.alias_name }}"></dd>
+      <dt>短描述:</dt>
+      <dd><input type=text name="short_desc" style="width: 90%" value="{{ software.short_desc }}"></dd>
+      <dt>长描述:</dt>
+      <dd><textarea name="long_desc" rows=8 style="width: 90%">{{ software.long_desc }}</textarea></dd>
+      <input type=hidden name="language" value="{{ software.language.alias_name }}">
+      <dd><input type=submit value="修改"></dd>
+    </dl>
+</form>
+<br>
+{% endfor %}
+
+{% endblock %}
