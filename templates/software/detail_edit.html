@@ -12,7 +12,7 @@
       <dd><input type=text name="short_desc" style="width: 90%" value="{{ software.short_desc }}"></dd>
       <dt>长描述:</dt>
       <dd><textarea name="long_desc" rows=8 style="width: 90%">{{ software.long_desc }}</textarea></dd>
-      <input type=hidden name="language" value="{{ software.language.alias_name }}">
+      <input type=hidden name="language" value="{{ software.language }}">
       <dd><input type=submit value="修改"></dd>
     </dl>
 </form>

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+  <p>Search desktop packages:</p>
+  <form action="" method="get">
+    <dl>
+      <dt style="text-align: center;"><input type="text" name="s" style="width: 35em;" value="{{ key }}">
+      <input type="submit" value="Search"></dt>
+    </dl>
+  </form>
+
+  <p></p>
+  <ul>
+    {% if result_list %}
+  	{% for pkg_name in result_list %}
+  	<li>
+      <a href='{{ url_for("desktop_details", pkg_name=pkg_name) }}'>{{ pkg_name }}</a>
+    </li>
+  	{% endfor %}
+    {% else %}
+      {% if key %}
+      <li>
+        <a href='{{ url_for("desktop_details", pkg_name=key) }}'>{{ key }}</a>
+      </li>
+      {% endif %}
+    {% endif %}
+  </ul>
+{% endblock %}

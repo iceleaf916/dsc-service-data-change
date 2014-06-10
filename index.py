@@ -27,6 +27,7 @@ from flask import url_for, abort, render_template, flash
 
 from database.db_models.software import Software
 from database.db_models.software import Language as SoftwareLanguage
+from database.db_models.category import FirstCategory, SecondCategory
 
 from database.db_models.desktop import Package
 
@@ -40,14 +41,6 @@ def get_language_obj(code):
         language_obj = SoftwareLanguage(language_code=code, alias_name=code)
         language_obj.save()
     return language_obj
-
-def object_list(template_name, qr, var_name='object_list', **kwargs):
-    kwargs.update(
-        page=int(request.args.get('page', 1)),
-        pages=qr.count() / 20 + 1
-    )
-    kwargs[var_name] = qr.paginate(kwargs['page'])
-    return render_template(template_name, **kwargs)
 
 @app.route("/")
 def index():
@@ -110,9 +103,79 @@ def software_edit(pkg_name):
         except:
             software_obj = Software(pkg_name=pkg_name, language=language_obj, alias_name=alias_name, short_desc=short_desc, long_desc=long_desc)
             software_obj.save()
+
         return render_template("software/edit_result.html", success=True, pkg_name=pkg_name)
     else:
         return render_template("software/edit_result.html", success=False, pkg_name=pkg_name)
+
+@app.route("/desktop/", methods=['GET'])
+def desktop_search():
+    result_list = []
+    key = ""
+    if request.method == 'GET':
+        key = request.args.get('s', '')
+        if key:
+            search_key = "*%s*" % key
+            package_list = Package.select().where(Package.pkg_name % search_key)
+            for package in package_list:
+                pkg_name = package.pkg_name
+                if not (pkg_name in result_list or pkg_name.endswith(":i386")):
+                    result_list.append(pkg_name)
+
+    return render_template("desktop/search_page.html", result_list=result_list, key=key)
+
+@app.route("/desktop/<pkg_name>/", methods=['GET'])
+def desktop_details(pkg_name):
+    try:
+        package_obj = Package.select().where(Package.pkg_name==pkg_name).get()
+        print package_obj.first_category_name
+    except:
+        pass
+    return "OK"
+
+@app.route("/desktop/<pkg_name>/edit/", methods=['GET', 'POST'])
+def desktop_edit():
+    pass
+
+@app.route("/category/")
+def category():
+    category_list = FirstCategory.select()
+    return render_template("category/category.html", category_list=category_list)
+
+@app.route("/category/<first_category_name>/")
+def category_first(first_category_name):
+    category_list = []
+    try:
+        first_obj = FirstCategory.select().where(FirstCategory.name==first_category_name).get()
+    except:
+        pass
+    category_list = SecondCategory.select().where(SecondCategory.first_category==first_obj)
+    return render_template("category/category_first.html", category_list=category_list, first_category=first_obj)
+
+@app.route("/category/edit/", methods=["GET", "POST"])
+def category_edit():
+    if request.method == "POST":
+        category_type = request.form['type']
+        name = request.form['name']
+        alias_name = request.form['alias_name']
+        if category_type == "first_category":
+            try:
+                category_obj = FirstCategory.select().where(FirstCategory.name==name).get()
+                category_obj.alias_name = alias_name
+                category_obj.save()
+                return "OK"
+            except:
+                return "Failed"
+        elif category_type == "second_category":
+            try:
+                category_obj = SecondCategory.select().where(SecondCategory.name==name).get()
+                category_obj.alias_name = alias_name
+                category_obj.save()
+                return "OK"
+            except:
+                return "Failed"
+        else:
+            return "Failed"
 
 if __name__ == "__main__":
     app.run(debug=True)

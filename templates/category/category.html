@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<script>
+$(document).ready(function(){
+  $("form").submit(function(event){
+    event.preventDefault();
+    var data = $(this).serializeArray();
+    var post_data = {};
+    for(var i=0; i<data.length;i++){
+    	post_data[data[i].name] = data[i].value;
+    }
+	$.post("{{ url_for('category_edit') }}", post_data, function(data,status){
+	  alert("Data: " + data + "\nStatus: " + status);
+	});
+  });
+});
+</script>
+
+  <h3>Category</h3>
+    <dl>
+	  	{% for category in category_list %}
+	  	<dt><a href="{{ url_for('category_first', first_category_name=category.name) }}">{{ category.name }}</a></dt>
+	  	<dd>
+	  		<form action="" method="get">
+	  			<input type=text name="alias_name" value="{{ category.alias_name }}"> <input type="submit" value="修改">
+	  			<input type=hidden name="name" value="{{ category.name }}">
+	  			<input type=hidden name="type" value="first_category">
+	  		</form>
+	  	</dd>
+	  	{% endfor %}
+  	</dl>
+  	
+{% endblock %}

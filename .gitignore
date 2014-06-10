@@ -9,3 +9,4 @@ dtk.egg-info
 *.swp
 /move.py
 *.mo
+app_icon

@@ -4,6 +4,7 @@
   <p>Welcome to the site!</p>
 	<ul>
 	  <li><a href='{{ url_for("software_search") }}'>修改描述</a></li>
-	  <li><a href='#'>改分类</a></li>
+	  <li><a href='{{ url_for("desktop_search") }}'>改软件分类</a></li>
+	  <li><a href='{{ url_for("category") }}'>改分类别名</a></li>
 	</ul>
 {% endblock %}
